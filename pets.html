@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de Adoção de Pets</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <a href="index.html"><img src="Img/icon.jpg" alt="Logo"></a>
+        <nav>
+            <ul>
+                <li><a href="QuemSomos.html">Quem somos</a></li>
+                <li><a href="Ajude.html">Ajude</a></li>
+                <li><a href="https://www.sp.senac.br/">Parcerias</a></li>
+
+            </ul>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="custom-container">
+        <section class="pets-section">
+            <h1>Encontre seu novo amigo:</h1>
+            <div class="pets-grid" id="petsGrid">
+                <!-- Os cards dos pets serão inseridos aqui -->
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div>
+            <div>
+                <h2>ADOTE</h2>
+                <p>
+                Adote com responsabilidade
+                Pesquisar animais
+                </p>
+            </div>
+            
+            <div>
+                <h2>COLABORE</h2>
+                <P>
+                    Doe qualquer valor
+        Seja uma Empresa Parceira
+                </P>
+            </div>
+            
+            <div>
+                <H2>DIVULGUE UM ANIMAL</H2>
+                <p>
+                    Cadastrar animal
+                </p>
+            </div>
+            
+            <div>
+              <h2>SOBRE O AMIGO</h2>
+                <p>
+                    Sobre o Amigo Não se Compra
+                    Perguntas frequentes <br>
+                    Termo de Uso e Política de Privacidade
+                </p>  
+            </div>
+            
+        </div>
+            
+
+        <img src="Img/icon.jpg" alt="Logo do rodapé">
+        <p>2024 © AdotAqui | Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="js/scripts.js">
+
+        // Função que busca os dados dos pets e atualiza a interface
+        function carregarPets() {
+          fetch('php/petsData.php')
+            .then(response => response.json())
+            .then(data => { 
+              const grid = document.getElementById('petsGrid');
+              grid.innerHTML = ''; // Limpa o conteúdo atual
+              
+              if(data.length > 0) {
+                data.forEach(pet => {
+                  // Cria um card para cada pet
+                  const card = document.createElement('div');
+                  card.classList.add('pet-card');
+                  
+                  card.innerHTML = `
+                    <h2>${pet.nome}</h2>
+                    <p><strong>Raça:</strong> ${pet.raca}</p>
+                    <p><strong>Idade:</strong> ${pet.idade}</p>
+                    <p><strong>Cidade:</strong> ${pet.cidade}</p>
+                    <p><strong>Telefone:</strong> ${pet.telefone}</p>
+                    <p><strong>Descrição:</strong> ${pet.descricao}</p>
+                    ${pet.imagem ? `<img src="${pet.imagem}" alt="${pet.nome}">` : ''}
+                  `;
+                  
+                  grid.appendChild(card);
+                });
+              } else {
+                grid.innerHTML = '<p>Nenhum pet cadastrado.</p>';
+              }
+            })
+            .catch(error => {
+              console.error('Erro ao carregar os pets:', error);
+            });
+        }
+        
+        // Chama a função quando a página carregar
+        document.addEventListener('DOMContentLoaded', carregarPets);
+        
+        // Opcional: se você deseja atualizar a lista periodicamente (por exemplo, a cada 30 segundos)
+        // setInterval(carregarPets, 30000);
+      </script>
+</body>
+</html>
